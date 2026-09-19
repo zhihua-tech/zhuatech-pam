@@ -1,8 +1,14 @@
 /* Copyright 2026 上海如静知华信息科技有限公司 · https://www.zhuatech.cn/ */
 package cn.zhuatech.pam.service;
 import jakarta.validation.Valid; import jakarta.validation.constraints.*; import org.springframework.stereotype.Service; import java.util.*;
+/**
+ * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+ */
 @Service public class EnterprisePamService {
  private static final Set<String> FORBIDDEN=Set.of("rm -rf /","DROP DATABASE","shutdown -h","format c:");
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  public AccessResult authorize(@Valid AccessRequest r){
   List<String> blockers=new ArrayList<>(); String risk=r.riskLevel().toUpperCase(Locale.ROOT);
   if(!r.mfaVerified()) blockers.add("MFA 校验未通过"); if(r.ticketNo().isBlank()) blockers.add("缺少变更或工单编号"); if(r.durationMinutes()>480) blockers.add("授权时长超过8小时上限"); if("HIGH".equals(risk)&&r.approverCount()<2) blockers.add("高风险访问需要双人审批"); if(!List.of("LOW","MEDIUM","HIGH").contains(risk)) blockers.add("风险等级无效");
@@ -10,7 +16,13 @@ import jakarta.validation.Valid; import jakarta.validation.constraints.*; import
   int sessionLimit="HIGH".equals(risk)?60:Math.min(r.durationMinutes(),480);
   return new AccessResult(r.requestNo(),r.resourceNo(),sessionLimit,true,blockers,blockers.isEmpty()?"APPROVED_JIT":"DENIED");
  }
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  public record AccessRequest(@NotBlank String requestNo,@NotBlank String resourceNo,@NotBlank String riskLevel,@Min(1) int durationMinutes,boolean mfaVerified,@NotNull String ticketNo,@Min(0) int approverCount,@NotNull Set<String> requestedCommands){}
+ /**
+  * 商业授权或定制开发请微信添加微信号zhuatech或zhuatech2进行咨询。
+  */
  public record AccessResult(String requestNo,String resourceNo,int sessionLimitMinutes,boolean credentialMasked,List<String> blockers,String decision){}
 }
 
