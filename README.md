@@ -1,5 +1,7 @@
 # ZhuaTech Pam｜知华科技特权访问管理 PAM
 
+[简体中文](README.md) | [English](README.en.md)
+
 > 将高权限访问收敛到临时授权、全程代理和可追溯审计
 
 [![Java 21](https://img.shields.io/badge/Java-21-6c3344)](backend/pom.xml)
