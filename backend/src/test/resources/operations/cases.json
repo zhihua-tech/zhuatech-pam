@@ -1,0 +1,59 @@
+[
+  {
+    "patch": {},
+    "expected": {
+      "decision": "PASS",
+      "remainingApprovedMinutes": "#20"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "elapsedMinutes": "61",
+      "recordedMinutes": "61"
+    },
+    "expected": {
+      "decision": "HOLD",
+      "overrunMinutes": "#1"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "elapsedMinutes": "61",
+      "recordedMinutes": "61",
+      "sessionActive": "NO"
+    },
+    "expected": {
+      "decision": "REVIEW"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "recordedMinutes": "39"
+    },
+    "expected": {
+      "decision": "HOLD",
+      "missingRecordingMinutes": "#1"
+    },
+    "error": false
+  },
+  {
+    "patch": {
+      "recordedMinutes": "41"
+    },
+    "expected": {},
+    "error": true
+  },
+  {
+    "patch": {
+      "recordingRequired": "NO",
+      "recordedMinutes": "0"
+    },
+    "expected": {
+      "decision": "PASS"
+    },
+    "error": false
+  }
+]
