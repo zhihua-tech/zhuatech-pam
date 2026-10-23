@@ -1,0 +1,91 @@
+{
+  "slug": "pam",
+  "title": "特权授权时限与双人审批预检",
+  "fields": [
+    {
+      "key": "request_no",
+      "label": "申请编号",
+      "type": "ID",
+      "length": 200
+    },
+    {
+      "key": "requester",
+      "label": "申请人",
+      "type": "ID",
+      "length": 200
+    },
+    {
+      "key": "approver",
+      "label": "审批人",
+      "type": "ID",
+      "length": 200
+    },
+    {
+      "key": "requested_minutes",
+      "label": "申请分钟数",
+      "type": "INTEGER",
+      "length": 200,
+      "scale": 0,
+      "min": "1",
+      "max": "1440"
+    },
+    {
+      "key": "max_minutes",
+      "label": "策略分钟上限",
+      "type": "INTEGER",
+      "length": 200,
+      "scale": 0,
+      "min": "1",
+      "max": "1440"
+    },
+    {
+      "key": "mfa",
+      "label": "多因素认证",
+      "type": "ENUM",
+      "length": 200,
+      "options": [
+        "ENABLED",
+        "DISABLED"
+      ]
+    }
+  ],
+  "unique": [
+    [
+      "request_no"
+    ]
+  ],
+  "rules": [
+    {
+      "op": "DIFFERENT",
+      "args": [
+        "requester",
+        "approver"
+      ],
+      "code": "PAM_SELF_APPROVAL",
+      "message": "特权申请不能自行审批",
+      "bad": {
+        "approver": "USER-01"
+      }
+    },
+    {
+      "op": "LE",
+      "args": [
+        "requested_minutes",
+        "max_minutes"
+      ],
+      "code": "PAM_DURATION",
+      "message": "授权时长不能超过策略上限",
+      "bad": {
+        "requested_minutes": "121"
+      }
+    }
+  ],
+  "sampleCsv": "request_no,requester,approver,requested_minutes,max_minutes,mfa\nPAM-001,USER-01,USER-02,60,120,ENABLED\n",
+  "limits": {
+    "rows": 500,
+    "bytes": 262144,
+    "columns": 32,
+    "cellCharacters": 4000
+  },
+  "scope": "Read-only batch validation; no persistence, reference-master lookup or full production certification."
+}
